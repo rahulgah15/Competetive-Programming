@@ -1,0 +1,31 @@
+class Solution {
+public:
+    bool canFinish(int n, vector<vector<int>>& pre) {
+        vector<vector<int>> graph(n);
+        for(auto i : pre){
+            graph[i[1]].push_back(i[0]);
+        }
+        vector<int> in(n,0);
+        for(auto i:pre){
+            in[i[0]]++;
+        }
+        queue<int> q;
+        vector<int> ans;
+        for(int i=0; i<n; i++){
+            if(in[i]==0)
+                q.push(i);
+        }
+        while(!q.empty()){
+            int curr = q.front();
+            q.pop();
+            ans.push_back(curr);
+            for(int i=0; i<graph[curr].size();i++){
+                in[graph[curr][i]]--;
+                if(in[graph[curr][i]]==0){
+                    q.push(graph[curr][i]);
+                }
+            }
+        }
+        return ans.size() == n;
+    }
+};
